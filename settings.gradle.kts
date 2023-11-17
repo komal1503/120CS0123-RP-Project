@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BP-APP"
+rootProject.name = "BPAPP"
 include(":app")
  
