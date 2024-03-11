@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.controls.Flash;
 import com.example.BPAPP.R;
@@ -19,21 +22,29 @@ import com.example.BPAPP.service.MeasurementPhase;
 import com.example.BPAPP.service.MotionMonitoringService;
 
 import java.lang.ref.WeakReference;
+import java.io.*;
+import java.util.*;
 
-public class PpgActivity extends AppCompatActivity {
+
+public class PpgActivity extends AppCompatActivity implements PpgFrameProcessor.ChartUpdateListener{
 
     private CameraView camera;
     private TextView heartRate;
+
+    private PpgFrameProcessor ppgFrameProcessor;
+//    private Vector v1 = new Vector();
+//    private Vector v2 = new Vector();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ppg);
         initCamera();
+        initChart();
         initButton();
     }
 
-    private void initCamera() {
+    public void initCamera() {
         camera = findViewById(R.id.view_camera);
         camera.setVisibility(View.INVISIBLE);
         camera.setLifecycleOwner(this);
@@ -42,7 +53,7 @@ public class PpgActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void initButton() {
+    public void initButton() {
         findViewById(R.id.btn_start_measurement).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 startMeasurement();
@@ -51,6 +62,21 @@ public class PpgActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    public void initChart() {
+        LinearLayout chartContainer = findViewById(R.id.chartContainer);
+        ppgFrameProcessor = new PpgFrameProcessor(this,new WeakReference<>(heartRate), new WeakReference<>(this));
+        LineChart ppgChart = ppgFrameProcessor.getPpgChart();
+
+        // Set layout parameters for the LineChart
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                800
+        );
+        ppgChart.setLayoutParams(params);
+
+        chartContainer.addView(ppgChart);
     }
 
     /**
@@ -62,7 +88,7 @@ public class PpgActivity extends AppCompatActivity {
      */
     private void startMeasurement() {
         camera.setFlash(Flash.TORCH);
-        camera.addFrameProcessor(new PpgFrameProcessor(new WeakReference<>(heartRate)));
+        camera.addFrameProcessor(new PpgFrameProcessor(this,new WeakReference<>(heartRate),new WeakReference<>(this)));
         motionMonitoring(MeasurementPhase.START);
     }
 
@@ -114,5 +140,23 @@ public class PpgActivity extends AppCompatActivity {
     private Intent motionMonitoringService() {
         return new Intent(PpgActivity.this, MotionMonitoringService.class);
     }
+
+    @Override
+    public void onDataPointAdded(long timestamp, int redSum) {
+        runOnUiThread(() -> {
+//            v1.add(redSum);
+//            v2.add(timestamp);
+
+
+
+            // Update the chart with the new data point
+            if (ppgFrameProcessor != null && ppgFrameProcessor.getPpgChart() != null) {
+                ppgFrameProcessor.addEntryToChart( redSum);
+            }
+
+//            for(int i = 0; i < v1.size(); i++) Log.d("YourTag", String.valueOf(v1.get(i)));
+        });
+    }
+
 
 }

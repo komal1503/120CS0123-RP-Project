@@ -22,4 +22,10 @@
             android:layout_height="wrap_content"
             android:text="PPG Signal"
             android:layout_below="@id/scgButton"/>
+    <Button
+        android:id="@+id/comboButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Combo Signal"
+        android:layout_below="@id/ppgButton"/>
 </RelativeLayout>

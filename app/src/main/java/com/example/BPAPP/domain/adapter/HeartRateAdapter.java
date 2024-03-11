@@ -1,5 +1,7 @@
 package com.example.BPAPP.domain.adapter;
 
+import android.util.Log;
+
 import java.util.Locale;
 import java.util.stream.LongStream;
 
@@ -17,6 +19,7 @@ public class HeartRateAdapter implements HeartRate {
     private final int[] signal;
     private final long[] timeStamps;
     private final int numberOfBeats;
+
 
     public HeartRateAdapter(int[] signal, long[] timeStamps) {
         this.signal = signal;
@@ -45,6 +48,8 @@ public class HeartRateAdapter implements HeartRate {
 
     private String toPrintableFormat(double averageHeartRate) {
         return String.format(Locale.ENGLISH, HEART_RATE_FORMAT, averageHeartRate);
+
+
     }
 
 }

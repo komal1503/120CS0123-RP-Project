@@ -15,14 +15,15 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/heartRateChart"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         />
-    <!--    <Button-->
-    <!--        android:id="@+id/ppgButton"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="PPG"/>-->
-    <!-- TextView to display the received heart rate value -->
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/secondChart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

@@ -35,5 +35,14 @@ public class MainActivity extends AppCompatActivity {
             }
             startActivity(intent);
         });
+
+        findViewById(R.id.comboButton).setOnClickListener(v -> {
+            // Start PPG activity
+            Intent intent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                intent = new Intent(MainActivity.this, Combo.class);
+            }
+            startActivity(intent);
+        });
     }
 }

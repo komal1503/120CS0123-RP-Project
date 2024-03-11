@@ -39,4 +39,5 @@ dependencies {
     implementation("com.otaliastudios:cameraview:2.7.1")
     implementation ("uk.me.berndporr:iirj:1.7")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("org.jfree:jfreechart:1.5.3")
 }
