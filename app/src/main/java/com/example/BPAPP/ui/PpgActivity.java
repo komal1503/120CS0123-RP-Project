@@ -42,6 +42,9 @@ public class PpgActivity extends AppCompatActivity implements PpgFrameProcessor.
         initCamera();
         initChart();
         initButton();
+
+        Log.d("Ppg activity", "yooo");
+
     }
 
     public void initCamera() {
